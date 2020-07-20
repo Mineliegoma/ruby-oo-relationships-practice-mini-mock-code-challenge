@@ -1,23 +1,28 @@
 class Author
-    attr_accessor :name  , :posts
+    attr_accessor :name 
+    @@all=[]
         def initialize(name)
             @name= name
-           #@@all<<self
+            @@all<<self
         end 
-        def books
-            Post.all.select {|book|book.author == self}
+        def self.all
+            @@all
         end 
-         def add_book(title)
-            book.author = self    #it goes to the song find the artist and associate it to itself. we are writting equal and double equal because we are defining it
-         end 
-            def write_book(title)
-                
-              new_book = Book.new(title)  
-              #binding.pry
 
-                 add_book(new_book)
-            end
-            def self.most_word
-            Book.all.count 
-            end 
+        def books
+            Book.all.select{|book| book.author== self}
+         
         end 
+        def write_book(title, word_count)
+         Book.new(self , title, word_count) #self will refers to the owner, p.s we are in the owner class
+        end
+
+        def total_words
+             self.books.inject(0){|all_words, book| all_words + book.word_count}
+         end
+         def self.most_words
+            self.all.max_by{|author| author.total_words}
+
+         end
+
+end
